@@ -1,0 +1,45 @@
+#usda 1.0
+(
+    endTimeCode = 192
+    startTimeCode = 1
+)
+
+def Xform "MultipleRobots"
+{
+    def Xform "Original"
+    {
+        double3 xformOp:translate = (-10, 0, 0)
+        uniform token[] xformOpOrder = ["xformOp:translate"]
+
+        def "RobotRoot" (
+            prepend references = @./animated_robot.usda@</RobotRoot>
+        )
+        {
+        }
+    }
+
+    def Xform "Shifted"
+    {
+        double3 xformOp:translate = (0, 0, 0)
+        uniform token[] xformOpOrder = ["xformOp:translate"]
+
+        def "RobotRoot" (
+            prepend references = @./animated_robot.usda@</RobotRoot> (offset = 48)
+        )
+        {
+        }
+    }
+
+    def Xform "HalfSpeed"
+    {
+        double3 xformOp:translate = (10, 0, 0)
+        uniform token[] xformOpOrder = ["xformOp:translate"]
+
+        def "RobotRoot" (
+            prepend references = @./animated_robot.usda@</RobotRoot> (scale = 0.5)
+        )
+        {
+        }
+    }
+}
+

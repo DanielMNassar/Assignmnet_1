@@ -1,0 +1,60 @@
+#usda 1.0
+(
+    endTimeCode = 192
+    startTimeCode = 1
+    upAxis = "Y"
+)
+
+def Xform "World"
+{
+    def PhysicsScene "PhysicsScene"
+    {
+        vector3f physics:gravityDirection = (0, -1, 0)
+        float physics:gravityMagnitude = 9.81
+    }
+
+    def Xform "PhysicsRobot"
+    {
+        double3 xformOp:translate = (0, 5, 0)
+        uniform token[] xformOpOrder = ["xformOp:translate"]
+
+        def "Robot" (
+            prepend apiSchemas = ["PhysicsRigidBodyAPI", "PhysicsCollisionAPI", "MaterialBindingAPI"]
+            prepend references = @./animated_robot.usda@</RobotRoot>
+        )
+        {
+            rel material:binding = </World/RobotMaterial>
+        }
+    }
+
+    def Xform "RobotMaterial" (
+        prepend apiSchemas = ["PhysicsMaterialAPI"]
+    )
+    {
+        float physics:dynamicFriction = 0.7
+        float physics:restitution = 0.9
+        float physics:staticFriction = 1
+    }
+
+    def Cube "GroundCube" (
+        prepend apiSchemas = ["PhysicsCollisionAPI", "PhysicsRigidBodyAPI", "MaterialBindingAPI"]
+    )
+    {
+        rel material:binding = </World/GroundMaterial>
+        bool physics:kinematicEnabled = 1
+        double size = 1
+        float3 xformOp:scale = (20, 0.1, 20)
+        double3 xformOp:translate = (0, -0.05000000074505806, 0)
+        uniform token[] xformOpOrder = ["xformOp:scale", "xformOp:translate"]
+    }
+
+    def Xform "GroundMaterial" (
+        prepend apiSchemas = ["PhysicsMaterialAPI"]
+    )
+    {
+        float physics:dynamicFriction = 0.6
+        float physics:restitution = 0.1
+        float physics:staticFriction = 0.8
+    }
+}
+
